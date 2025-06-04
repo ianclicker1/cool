@@ -1,71 +1,64 @@
 body {
-  font-family: Arial, sans-serif;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   text-align: center;
-  margin: 0;
-  padding: 0;
-}
-
-#game {
   padding: 20px;
+  transition: background 0.5s, color 0.5s;
 }
 
-#click-area {
-  margin: 20px 0;
+body.world1 {
+  background: linear-gradient(145deg, #002a14, #001f0f);
+  color: #00ff88;
 }
 
-#ian-image {
-  width: 200px;
-  height: 200px;
+body.world2 {
+  background: linear-gradient(145deg, #fff5f5, #ffdddd);
+  color: #b30000;
+}
+
+h1 {
+  font-size: 3em;
+  margin-bottom: 10px;
+}
+
+#ian {
+  width: 150px;
   border-radius: 50%;
   cursor: pointer;
+  margin: 20px 0;
+  transition: transform 0.2s;
+}
+#ian:hover {
+  transform: scale(1.05);
 }
 
-#upgrade-buttons button,
-#multipliers button,
-#rebirth-btn,
-#controls button {
-  margin: 5px;
-  padding: 10px 20px;
-  font-size: 16px;
+button {
+  padding: 12px 24px;
+  margin: 10px;
+  font-size: 1.1em;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s, color 0.3s;
 }
 
-button.green {
-  background-color: green;
-  color: white;
+button:disabled {
+  background: grey;
+  color: #ccc;
+  cursor: not-allowed;
 }
 
-button.red {
-  background-color: red;
-  color: white;
+.world1 button {
+  background-color: #003f1f;
+  color: #00ff88;
+}
+.world1 button:hover:not(:disabled) {
+  background-color: #007f3f;
 }
 
-button.disabled {
-  background-color: grey;
-  color: white;
+.world2 button {
+  background-color: #ffdddd;
+  color: #b30000;
 }
-
-button.available {
-  background-color: orange;
-  color: white;
-}
-
-.hidden {
-  display: none;
-}
-
-#popup {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0,0,0,0.5);
-}
-
-#popup-content {
-  background-color: white;
-  padding: 20px;
-  margin: 100px auto;
-  width: 300px;
-  border-radius: 10px;
+.world2 button:hover:not(:disabled) {
+  background-color: #ff9999;
 }
