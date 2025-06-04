@@ -3,38 +3,15 @@
 <head>
   <meta charset="UTF-8" />
   <title>Ian Clicker</title>
-  <style>
-    body {
-      background-color: #001f0f;
-      color: #00ff00;
-      font-family: 'Arial', sans-serif;
-      text-align: center;
-      padding: 20px;
-    }
-    h1 {
-      font-size: 3em;
-    }
-    #ian {
-      width: 150px;
-      border-radius: 50%;
-      cursor: pointer;
-      margin: 20px 0;
-    }
-    button {
-      padding: 10px 20px;
-      margin: 10px;
-      font-size: 1.2em;
-    }
-    #vault {
-      display: none;
-    }
-  </style>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <h1>Ian Clicker</h1>
   <img src="ian.png" id="ian" alt="Ian" />
   <p>Clicks: <span id="clicks">0</span></p>
-  <button onclick="addClick()">Click Ian</button>
+  <button id="click-btn" onclick="addClick()">Click Ian</button>
+  <p>World: <span id="world">1</span></p>
+  <button onclick="switchWorld()">Switch World</button>
 
   <iframe id="vault" src="https://sharedvault.github.io/" style="display:none;"></iframe>
   <script src="main.js"></script>
