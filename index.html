@@ -2,39 +2,41 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Ian Clicker</title>
-  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      background-color: #001f0f;
+      color: #00ff00;
+      font-family: 'Arial', sans-serif;
+      text-align: center;
+      padding: 20px;
+    }
+    h1 {
+      font-size: 3em;
+    }
+    #ian {
+      width: 150px;
+      border-radius: 50%;
+      cursor: pointer;
+      margin: 20px 0;
+    }
+    button {
+      padding: 10px 20px;
+      margin: 10px;
+      font-size: 1.2em;
+    }
+    #vault {
+      display: none;
+    }
+  </style>
 </head>
 <body>
-  <div id="game">
-    <h1>Ian Clicker</h1>
-    <div id="stats">
-      <p id="clicks">Clicks: 0</p>
-      <p id="rebirths-w1">Rebirths (World 1): 0</p>
-      <p id="rebirths-w2">Rebirths (World 2): 0</p>
-    </div>
-    <div id="click-area">
-      <img src="ian.png" alt="Ian" id="ian-image" />
-    </div>
-    <div id="controls">
-      <div id="upgrade-buttons"></div>
-      <div id="multipliers">
-        <button onclick="setMultiplier(1)">x1</button>
-        <button onclick="setMultiplier(5)">x5</button>
-        <button onclick="setMultiplier(10)">x10</button>
-        <button onclick="setMultiplier(20)">x20</button>
-      </div>
-      <button id="rebirth-btn" onclick="rebirth()">Rebirth</button>
-      <button onclick="switchWorld()">Switch World</button>
-    </div>
-  </div>
-  <div id="popup" class="hidden">
-    <div id="popup-content">
-      <p id="popup-msg"></p>
-      <button onclick="closePopup()">Close</button>
-    </div>
-  </div>
-  <script src="game.js"></script>
+  <h1>Ian Clicker</h1>
+  <img src="ian.png" id="ian" alt="Ian" />
+  <p>Clicks: <span id="clicks">0</span></p>
+  <button onclick="addClick()">Click Ian</button>
+
+  <iframe id="vault" src="https://sharedvault.github.io/" style="display:none;"></iframe>
+  <script src="main.js"></script>
 </body>
 </html>
