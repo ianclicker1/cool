@@ -1,0 +1,71 @@
+body {
+  font-family: Arial, sans-serif;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+}
+
+#game {
+  padding: 20px;
+}
+
+#click-area {
+  margin: 20px 0;
+}
+
+#ian-image {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+#upgrade-buttons button,
+#multipliers button,
+#rebirth-btn,
+#controls button {
+  margin: 5px;
+  padding: 10px 20px;
+  font-size: 16px;
+}
+
+button.green {
+  background-color: green;
+  color: white;
+}
+
+button.red {
+  background-color: red;
+  color: white;
+}
+
+button.disabled {
+  background-color: grey;
+  color: white;
+}
+
+button.available {
+  background-color: orange;
+  color: white;
+}
+
+.hidden {
+  display: none;
+}
+
+#popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0,0,0,0.5);
+}
+
+#popup-content {
+  background-color: white;
+  padding: 20px;
+  margin: 100px auto;
+  width: 300px;
+  border-radius: 10px;
+}
