@@ -1,19 +1,296 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Ian Clicker</title>
-  <link rel="stylesheet" href="style.css" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Ian Clicker</title>
+<style>
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: white;
+    user-select: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh;
+    transition: background-color 0.5s ease;
+  }
+  body.world1 {
+    background: linear-gradient(135deg, #004400, #000000);
+  }
+  body.world2 {
+    background: linear-gradient(135deg, #8B0000, #FFFFFF);
+    color: #440000;
+  }
+  h1 {
+    margin-top: 1rem;
+  }
+  #ian {
+    margin: 20px;
+    border-radius: 50%;
+    border: 5px solid white;
+    width: 150px;
+    height: 150px;
+    background: url('ian.png') center/contain no-repeat;
+    cursor: pointer;
+    transition: transform 0.1s ease;
+  }
+  #ian:active {
+    transform: scale(0.9);
+  }
+  #info {
+    text-align: center;
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+  #upgrade-buttons {
+    display: flex;
+    flex-direction: column;
+    max-width: 400px;
+    width: 90vw;
+    margin: 10px 0;
+  }
+  button {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 16px;
+    padding: 10px 14px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    margin: 6px 0;
+    transition: background-color 0.3s ease;
+    color: white;
+    text-align: center;
+  }
+  button:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+  .buy-available.world1 {
+    background-color: #28a745;
+  }
+  .buy-unavailable {
+    background-color: grey;
+  }
+  .buy-available.world2 {
+    background-color: #b22222;
+  }
+  #rebirth-btn {
+    font-weight: bold;
+    font-size: 18px;
+    border-radius: 8px;
+    padding: 12px 20px;
+    width: 100%;
+    margin-top: 15px;
+  }
+  #rebirth-btn.enabled {
+    background-color: orange;
+    color: white;
+    cursor: pointer;
+  }
+  #rebirth-btn.disabled {
+    background-color: grey;
+    color: white;
+    cursor: not-allowed;
+    opacity: 0.7;
+  }
+  #switch-world {
+    margin-top: 10px;
+    font-size: 16px;
+    padding: 8px 14px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+  }
+  #switch-world.world1 {
+    background-color: #28a745;
+    color: white;
+  }
+  #switch-world.world2 {
+    background-color: #b22222;
+    color: white;
+  }
+</style>
 </head>
-<body>
-  <h1>Ian Clicker</h1>
-  <img src="ian.png" id="ian" alt="Ian" />
-  <p>Clicks: <span id="clicks">0</span></p>
-  <button id="click-btn" onclick="addClick()">Click Ian</button>
-  <p>World: <span id="world">1</span></p>
-  <button onclick="switchWorld()">Switch World</button>
+<body class="world1">
 
-  <iframe id="vault" src="https://sharedvault.github.io/" style="display:none;"></iframe>
-  <script src="main.js"></script>
+<h1>Ian Clicker</h1>
+
+<div id="info">
+  Clicks: <span id="clicks">0</span><br />
+  World: <span id="world">1</span> | Rebirths: <span id="rebirths">0</span>
+</div>
+
+<div id="ian" title="Tap Ian to get clicks!"></div>
+
+<div id="upgrade-buttons"></div>
+
+<button id="rebirth-btn" disabled>Rebirth (100,000 clicks)</button>
+<button id="switch-world" class="world1">Switch to World 2</button>
+
+<script>
+  let clicks = 0;
+  let rebirths = {1: 0, 2: 0};
+  let world = 1;
+
+  const baseUpgrades = {
+    1: {
+      cursor: { price: 10, cps: 1, owned: 0 },
+      miner: { price: 100, cps: 5, owned: 0 },
+      robot: { price: 500, cps: 10, owned: 0 }
+    },
+    2: {
+      alien: { price: 50, cps: 2, owned: 0 },
+      spaceship: { price: 85, cps: 10, owned: 0 },
+      ufo: { price: 125, cps: 20, owned: 0 }
+    }
+  };
+
+  let upgrades = JSON.parse(JSON.stringify(baseUpgrades));
+
+  function capitalize(str) {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  }
+
+  function formatNumber(n) {
+    if (n >= 1e6) return (n / 1e6).toFixed(1) + "M";
+    if (n >= 1e3) return (n / 1e3).toFixed(1) + "K";
+    return Math.floor(n).toLocaleString();
+  }
+
+  function updateUI() {
+    document.getElementById("clicks").textContent = Math.floor(clicks).toLocaleString();
+    document.getElementById("world").textContent = world;
+    document.getElementById("rebirths").textContent = rebirths[world].toLocaleString();
+
+    updateUpgradesUI();
+    updateButtons();
+  }
+
+  function updateUpgradesUI() {
+    const container = document.getElementById("upgrade-buttons");
+    container.innerHTML = "";
+    for (const key in upgrades[world]) {
+      const up = upgrades[world][key];
+      const btn = document.createElement("button");
+      btn.textContent = `Buy Ian ${capitalize(key)} (${up.owned}) - ${formatNumber(up.price)} clicks (+${up.cps.toFixed(1)} cps)`;
+      if (clicks >= up.price) {
+        btn.disabled = false;
+        btn.className = "buy-available world" + world;
+      } else {
+        btn.disabled = true;
+        btn.className = "buy-unavailable";
+      }
+      btn.onclick = () => buyUpgrade(key);
+      container.appendChild(btn);
+    }
+  }
+
+  function updateButtons() {
+    const rebirthBtn = document.getElementById("rebirth-btn");
+    if (clicks >= 100000) {
+      rebirthBtn.disabled = false;
+      rebirthBtn.classList.add("enabled");
+      rebirthBtn.classList.remove("disabled");
+    } else {
+      rebirthBtn.disabled = true;
+      rebirthBtn.classList.add("disabled");
+      rebirthBtn.classList.remove("enabled");
+    }
+
+    const switchBtn = document.getElementById("switch-world");
+    if (world === 1) {
+      switchBtn.textContent = "Switch to World 2";
+      switchBtn.className = "world2";
+    } else {
+      switchBtn.textContent = "Switch to World 1";
+      switchBtn.className = "world1";
+    }
+  }
+
+  function buyUpgrade(key) {
+    const up = upgrades[world][key];
+    if (clicks >= up.price) {
+      clicks -= up.price;
+      up.owned++;
+      up.price = Math.floor(up.price * 2);
+      up.cps += 0.5;
+      updateUI();
+      saveGame();
+    }
+  }
+
+  function getCPS() {
+    let total = 0;
+    for (const key in upgrades[world]) {
+      const up = upgrades[world][key];
+      total += up.cps * up.owned;
+    }
+    return total * (1 + rebirths[world] * 0.5);
+  }
+
+  function rebirth() {
+    if (clicks >= 100000) {
+      rebirths[world]++;
+      clicks = 0;
+      upgrades[world] = JSON.parse(JSON.stringify(baseUpgrades[world]));
+      updateUI();
+      saveGame();
+    }
+  }
+
+  function switchWorld() {
+    world = world === 1 ? 2 : 1;
+    document.body.className = "world" + world;
+    updateUI();
+    saveGame();
+  }
+
+  document.getElementById("ian").addEventListener("click", () => {
+    clicks++;
+    updateUI();
+    saveGame();
+  });
+
+  setInterval(() => {
+    clicks += getCPS() / 10;
+    updateUI();
+    saveGame();
+  }, 100);
+
+  function saveGame() {
+    const data = {
+      clicks,
+      rebirths,
+      world,
+      upgrades
+    };
+    localStorage.setItem("ianClickerSave", JSON.stringify(data));
+  }
+
+  function loadGame() {
+    const saved = localStorage.getItem("ianClickerSave");
+    if (saved) {
+      try {
+        const data = JSON.parse(saved);
+        clicks = data.clicks || 0;
+        rebirths = data.rebirths || {1: 0, 2: 0};
+        world = data.world || 1;
+        upgrades = data.upgrades || JSON.parse(JSON.stringify(baseUpgrades));
+        document.body.className = "world" + world;
+      } catch {
+      }
+    }
+  }
+
+  window.onload = () => {
+    loadGame();
+    updateUI();
+    document.getElementById("rebirth-btn").onclick = rebirth;
+    document.getElementById("switch-world").onclick = switchWorld;
+  };
+</script>
+
 </body>
 </html>
