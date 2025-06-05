@@ -7,43 +7,54 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div id="game">
-    <div id="top-bar">
-      <div id="buy-multiplier">1x</div>
-      <button id="menu-btn">☰</button>
+  <div id="top-bar">
+    <div id="buy-multiplier">
+      <button onclick="setMultiplier(1)">1x</button>
+      <button onclick="setMultiplier(5)">5x</button>
+      <button onclick="setMultiplier(10)">10x</button>
+      <button onclick="setMultiplier(20)">20x</button>
+    </div>
+    <button id="menu-button" onclick="toggleMenu()">☰</button>
+  </div>
+
+  <div id="menu-popup" class="hidden">
+    <div class="menu-header">
+      <span>Menu</span>
+      <button onclick="toggleMenu()" class="x-button">✕</button>
+    </div>
+    <button onclick="openWorldSelector()">Worlds</button>
+  </div>
+
+  <div id="world-selector" class="hidden">
+    <div class="world-card" onclick="trySwitchWorld(1)">
+      <img src="world1select.png" />
+      <p>Cash World<span id="world1-status"></span></p>
+    </div>
+    <div class="world-card" onclick="trySwitchWorld(2)">
+      <img src="world2select.png" />
+      <p>Mars<span id="world2-status"></span></p>
+    </div>
+    <button class="x-button" onclick="closeWorldSelector()">✕</button>
+  </div>
+
+  <div id="game-container">
+    <div id="left-upgrades">
+      <div class="upgrade-row" id="upgrade1-row"></div>
+      <div class="upgrade-row" id="upgrade2-row"></div>
+      <div class="upgrade-row" id="upgrade3-row"></div>
     </div>
 
-    <div id="ian-container">
+    <div id="center-clicker">
       <div id="click-count">0 Clicks</div>
-      <img id="ian-img" src="ian.png" alt="Ian" />
-      <button id="rebirth-btn" disabled>Rebirth</button>
-    </div>
-
-    <div id="upgrade-area">
-      <div class="upgrade-row" id="row1"></div>
-      <div class="upgrade-row" id="row2"></div>
-      <div class="upgrade-row" id="row3"></div>
-    </div>
-
-    <div id="world-menu" class="gui hidden">
-      <img src="x.png" id="close-world-menu" />
-      <div id="world1-select" class="world-select">
-        <img src="world1select.png" />
-        <p id="world1-label">Cash World</p>
-      </div>
-      <div id="world2-select" class="world-select">
-        <img src="world2select.png" />
-        <p id="world2-label">Mars</p>
-        <p class="world-locked-text" id="mars-locked">Requires 10M Clicks</p>
-      </div>
-    </div>
-
-    <div id="offline-popup" class="gui hidden">
-      <p>You earned <span id="offline-amount"></span> clicks while offline!</p>
-      <button onclick="closeOfflinePopup()">OK</button>
+      <img src="ian.png" id="ian" onclick="handleClick()" />
+      <button id="rebirth-button" onclick="doRebirth()">Rebirth</button>
     </div>
   </div>
 
-  <script src="script.js"></script>
+  <div id="upgrades-list">
+    <div id="upgrade-buttons"></div>
+  </div>
+
+  <script src="game.js"></script>
 </body>
 </html>
