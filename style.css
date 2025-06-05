@@ -1,66 +1,138 @@
-
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
-  background: linear-gradient(to bottom, #0f0, #000);
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(to bottom right, #003300, #001a00);
   color: white;
+}
+
+#game {
+  padding: 10px;
 }
 
 #top-bar {
   display: flex;
   justify-content: space-between;
-  padding: 10px;
+  align-items: center;
 }
 
 #click-counter {
-  font-size: 24px;
+  font-size: 2em;
+  font-weight: bold;
+  color: white;
 }
 
-#multiplier-controls {
+#controls {
   display: flex;
   gap: 10px;
 }
 
-#main-content {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  padding: 20px;
+#controls button,
+#controls select {
+  font-weight: bold;
+  background: black;
+  color: white;
+  border: none;
+  padding: 6px 10px;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
-#ian-area {
+#main {
+  display: flex;
+  margin-top: 20px;
+}
+
+#ian-section {
+  flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-right: 50px;
+  justify-content: start;
+  margin-top: 50px;
+  margin-left: 20px;
 }
 
-#ian-image {
+#ian-img {
   width: 200px;
-  height: auto;
   cursor: pointer;
+  border-radius: 50%;
+  margin-bottom: 10px;
 }
 
-#rebirth-button {
-  margin-top: 20px;
-  padding: 10px;
-  font-size: 16px;
-  background: orange;
+#rebirth-btn {
+  margin-top: 10px;
+  padding: 5px 10px;
+  font-size: 0.8em;
+  border-radius: 5px;
   border: none;
+  background-color: grey;
+  color: white;
+  cursor: not-allowed;
+}
+
+#rebirth-btn.available {
+  background-color: orange;
   cursor: pointer;
 }
 
-.upgrade-section {
-  margin-bottom: 20px;
+#upgrades {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding-left: 30px;
 }
 
-.upgrade-bar {
+.upgrade {
+  background: rgba(255, 255, 255, 0.1);
+  padding: 10px;
+  border-radius: 10px;
+  font-weight: bold;
+}
+
+.price {
+  font-size: 0.9em;
+  color: #ccc;
+}
+
+.icons {
   display: flex;
   flex-wrap: wrap;
-  gap: 2px;
+  margin-top: 5px;
+  gap: 3px;
 }
 
-.upgrade-bar img {
+.icons img {
   width: 20px;
   height: 20px;
+}
+
+#world-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: black;
+  color: white;
+  padding: 20px;
+  border-radius: 10px;
+  z-index: 100;
+  display: none;
+}
+
+#close-popup {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: 20px;
+  cursor: pointer;
+}
+
+.world-option {
+  margin-top: 20px;
+  background: rgba(255, 255, 255, 0.05);
+  padding: 10px;
+  text-align: center;
+  cursor: pointer;
+  font-size: 1.1em;
 }
