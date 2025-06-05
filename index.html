@@ -1,71 +1,579 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Ian Clicker</title>
-  <link rel="stylesheet" href="style.css">
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Ian Clicker</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600&display=swap');
+  body {
+    margin: 0; padding: 0;
+    font-family: 'Montserrat', sans-serif;
+    color: white;
+    user-select: none;
+    overflow-x: hidden;
+    transition: background 0.5s;
+  }
+  .world1 {
+    background: linear-gradient(135deg, #003300, #000000);
+    color: white;
+  }
+  .world2 {
+    background: linear-gradient(135deg, #aa0000, #fff0f0);
+    color: #aa0000;
+  }
+  #container {
+    max-width: 500px;
+    margin: 20px auto;
+    text-align: center;
+    padding: 15px;
+  }
+  #ian-container {
+    position: relative;
+    margin: 20px auto 10px;
+    width: 200px; height: 200px;
+    border-radius: 50%;
+    border: 6px solid;
+    border-color: currentColor;
+    cursor: pointer;
+  }
+  #ian {
+    width: 180px; height: 180px;
+    border-radius: 50%;
+    display: block;
+    margin: 10px auto;
+    user-select: none;
+  }
+  #clicks-display {
+    font-size: 32px;
+    font-weight: 700;
+    margin: 10px 0 5px;
+  }
+  #rebirths-display {
+    font-size: 20px;
+    margin-bottom: 15px;
+  }
+  #upgrades {
+    margin-top: 15px;
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .upgrade-btn {
+    flex: 1 1 140px;
+    background-color: grey;
+    border: none;
+    padding: 12px 8px;
+    border-radius: 8px;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    user-select: none;
+    transition: background-color 0.3s;
+    font-size: 14px;
+    white-space: pre-line;
+  }
+  .upgrade-btn.enabled {
+    background-color: currentColor;
+  }
+  #buy-multiplier {
+    margin: 15px 0;
+    font-weight: 600;
+  }
+  select {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    padding: 4px 6px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+  }
+  #rebirth-btn {
+    margin: 15px auto;
+    padding: 8px 18px;
+    border-radius: 12px;
+    border: none;
+    font-weight: 700;
+    font-size: 16px;
+    cursor: pointer;
+    display: block;
+    width: 120px;
+    user-select: none;
+    transition: background-color 0.3s;
+  }
+  #rebirth-btn.enabled {
+    background-color: orange;
+    color: black;
+  }
+  #rebirth-btn.disabled {
+    background-color: grey;
+    color: #ddd;
+    cursor: not-allowed;
+  }
+  #switch-world-btn {
+    margin: 15px auto 0;
+    padding: 8px 20px;
+    border-radius: 12px;
+    border: none;
+    font-weight: 700;
+    font-size: 16px;
+    cursor: pointer;
+    display: block;
+    width: 160px;
+    user-select: none;
+    background-color: #555;
+    color: white;
+    transition: background-color 0.3s;
+  }
+  #switch-world-btn:hover {
+    background-color: #777;
+  }
+  #offline-popup {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #222;
+    color: #0f0;
+    padding: 12px 20px;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 18px;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.6s;
+    user-select: none;
+    box-shadow: 0 0 12px #0f0aa0;
+    z-index: 1001;
+  }
+  #offline-popup.show {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  /* World selector popup */
+  #world-selector-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100vw; height: 100vh;
+    background: rgba(0,0,0,0.8);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+  }
+  #world-selector {
+    position: relative;
+    background: #111;
+    border-radius: 14px;
+    padding: 20px 30px 30px;
+    width: 360px;
+    box-shadow: 0 0 20px #000;
+    user-select: none;
+  }
+  #world-selector h2 {
+    margin: 0 0 15px;
+    font-weight: 700;
+    font-size: 24px;
+    color: white;
+    text-align: center;
+  }
+  #close-selector {
+    position: absolute;
+    top: 12px; right: 12px;
+    width: 32px; height: 32px;
+    cursor: pointer;
+    user-select: none;
+  }
+  #close-selector img {
+    width: 100%; height: 100%;
+  }
+  .world-card {
+    position: relative;
+    cursor: pointer;
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 15px auto;
+    width: 320px;
+    height: 140px;
+    box-shadow: 0 0 10px #000;
+    border: 3px solid transparent;
+    transition: border-color 0.3s;
+  }
+  .world-card:hover {
+    border-color: #888;
+  }
+  .world-card img {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+  }
+  .fade-overlay {
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 40%;
+    background: linear-gradient(transparent, rgba(0,0,0,0.7));
+  }
+  .world-name {
+    position: absolute;
+    bottom: 8px; left: 12px;
+    font-size: 20px;
+    font-weight: 700;
+    color: white;
+    text-shadow: 0 0 5px black;
+    user-select: none;
+  }
+  /* Blackout overlay for locked world */
+  .locked-overlay {
+    position: absolute;
+    top:0; left:0; right:0; bottom:0;
+    background: rgba(0,0,0,0.85);
+    color: white;
+    font-weight: 700;
+    font-size: 18px;
+    text-align: center;
+    padding: 40px 15px;
+    user-select: none;
+  }
+  .selected-world {
+    border-color: orange !important;
+  }
+  .selected-world .fade-overlay {
+    background: rgba(0,0,0,0.85);
+  }
+</style>
 </head>
 <body>
-  <div id="top-bar">
-    <div id="click-counter">0 Clicks</div>
-    <div id="multiplier-controls">
-      <select id="buy-multiplier">
-        <option value="1">x1</option>
-        <option value="10">x10</option>
-        <option value="25">x25</option>
-        <option value="50">x50</option>
-      </select>
-      <button id="menu-button">Menu</button>
-    </div>
+<div id="container">
+  <div id="ian-container" title="Tap Ian to get clicks!">
+    <img id="ian" src="ian.png" alt="Ian" />
+  </div>
+  <div id="clicks-display">Clicks: 0</div>
+  <div id="rebirths-display">Rebirths: 0</div>
+
+  <div id="upgrades"></div>
+
+  <div id="buy-multiplier">
+    Buy multiplier:
+    <select id="multiplier-select">
+      <option value="1">1x</option>
+      <option value="5">5x</option>
+      <option value="10">10x</option>
+    </select>
   </div>
 
-  <div id="main-content">
-    <div id="ian-area">
-      <img src="ian.png" id="ian-image" alt="Ian">
-      <button id="rebirth-button">Rebirth</button>
-    </div>
+  <button id="rebirth-btn" class="disabled" disabled>Rebirth</button>
+  <button id="switch-world-btn">Switch World</button>
+</div>
 
-    <div id="upgrades">
-      <div class="upgrade-section">
-        <div class="upgrade-info">
-          <p>Ian Cursor</p>
-          <p id="cursor-cost">15 Clicks</p>
-        </div>
-        <div class="upgrade-bar" id="cursor-bar"></div>
-      </div>
-      <div class="upgrade-section">
-        <div class="upgrade-info">
-          <p>Ian Miner</p>
-          <p id="miner-cost">100 Clicks</p>
-        </div>
-        <div class="upgrade-bar" id="miner-bar"></div>
-      </div>
-      <div class="upgrade-section">
-        <div class="upgrade-info">
-          <p>Ian Robot</p>
-          <p id="robot-cost">500 Clicks</p>
-        </div>
-        <div class="upgrade-bar" id="robot-bar"></div>
-      </div>
+<div id="offline-popup"></div>
+
+<!-- World selector popup -->
+<div id="world-selector-overlay">
+  <div id="world-selector">
+    <div id="close-selector" title="Close world selector">
+      <img src="x.png" alt="Close" />
+    </div>
+    <h2>Select World</h2>
+    <div id="world1-card" class="world-card">
+      <img src="world1select.png" alt="Cash World" />
+      <div class="fade-overlay"></div>
+      <div class="world-name" id="world1-name">Cash World</div>
+      <div class="locked-overlay" style="display:none;">(Already Here)</div>
+    </div>
+    <div id="world2-card" class="world-card">
+      <img src="world2select.png" alt="Mars" />
+      <div class="fade-overlay"></div>
+      <div class="world-name" id="world2-name">Mars</div>
+      <div class="locked-overlay" style="display:none;">Must have 10M clicks to enter</div>
     </div>
   </div>
+</div>
 
-  <div id="world-gui" style="display: none;">
-    <div id="world-popup">
-      <img src="x.png" id="close-world-popup" alt="Close" />
-      <div class="world-option" id="world1">
-        <img src="world1select.png" alt="Cash World">
-        <p>Cash World <span id="here1">(Already Here)</span></p>
-      </div>
-      <div class="world-option" id="world2">
-        <img src="world2select.png" alt="Mars">
-        <p>Mars<br>Must have 10M clicks <span id="here2"></span></p>
-      </div>
-    </div>
-  </div>
+<script>
+  // Utility for formatting numbers with commas
+  function numberWithCommas(x) {
+    if (x < 1000000) return x.toLocaleString();
+    const suffixes = ["", "K", "M", "B", "T", "Qa", "Qi"];
+    let tier = Math.floor(Math.log10(x) / 3);
+    if (tier >= suffixes.length) tier = suffixes.length - 1;
+    const scale = Math.pow(10, tier * 3);
+    const scaled = x / scale;
+    return scaled.toFixed(1).replace(/\.0$/, '') + suffixes[tier];
+  }
 
-  <script src="script.js"></script>
+  // Game data
+  let clicks = 0;
+  let rebirths = 0;
+  let currentWorld = 1; // 1 = Cash World, 2 = Mars
+
+  // Upgrades definitions for each world
+  // Prices and click rates; multiplier applies to price growth
+  const upgradesData = {
+    1: [ // Cash World
+      {name: 'Ian Cursor', basePrice: 15, cps: 0.1},
+      {name: 'Miner', basePrice: 100, cps: 1},
+      {name: 'Robot', basePrice: 1100, cps: 8},
+    ],
+    2: [ // Mars
+      {name: 'Ian Alien', basePrice: 20, cps: 0.15},
+      {name: 'Ian Spaceship', basePrice: 120, cps: 1.5},
+      {name: 'Ian UFO', basePrice: 1300, cps: 9},
+    ],
+  };
+
+  let upgrades = [
+    {count: 0, price: upgradesData[1][0].basePrice},
+    {count: 0, price: upgradesData[1][1].basePrice},
+    {count: 0, price: upgradesData[1][2].basePrice},
+  ];
+
+  // Price multiplier growth per purchase is 1.5x (changed from 2x)
+  const priceMultiplierGrowth = 1.5;
+
+  // DOM elements
+  const clicksDisplay = document.getElementById('clicks-display');
+  const rebirthsDisplay = document.getElementById('rebirths-display');
+  const upgradesDiv = document.getElementById('upgrades');
+  const multiplierSelect = document.getElementById('multiplier-select');
+  const rebirthBtn = document.getElementById('rebirth-btn');
+  const ianImg = document.getElementById('ian');
+  const ianContainer = document.getElementById('ian-container');
+  const offlinePopup = document.getElementById('offline-popup');
+  const switchWorldBtn = document.getElementById('switch-world-btn');
+
+  // World selector elements
+  const worldSelectorOverlay = document.getElementById('world-selector-overlay');
+  const closeSelectorBtn = document.getElementById('close-selector');
+  const world1Card = document.getElementById('world1-card');
+  const world2Card = document.getElementById('world2-card');
+  const world1NameLabel = document.getElementById('world1-name');
+  const world2NameLabel = document.getElementById('world2-name');
+  const world1LockedOverlay = world1Card.querySelector('.locked-overlay');
+  const world2LockedOverlay = world2Card.querySelector('.locked-overlay');
+
+  // Show upgrade buttons for current world
+  function renderUpgrades() {
+    upgradesDiv.innerHTML = '';
+    const data = upgradesData[currentWorld];
+    for (let i = 0; i < data.length; i++) {
+      const upgrade = data[i];
+      const owned = upgrades[i].count;
+      const price = upgrades[i].price;
+      const multiplier = Number(multiplierSelect.value);
+
+      const affordable = clicks >= price * multiplier;
+      const btn = document.createElement('button');
+      btn.className = 'upgrade-btn ' + (affordable ? 'enabled' : '');
+      btn.style.color = currentWorld === 1 ? '#0f0' : '#a00';
+      btn.innerHTML = `${upgrade.name}\nOwned: ${owned}\nPrice: ${numberWithCommas(Math.floor(price * multiplier))}`;
+      btn.disabled = !affordable;
+
+      btn.onclick = () => {
+        buyUpgrade(i);
+      };
+      upgradesDiv.appendChild(btn);
+    }
+  }
+
+  // Buy upgrade
+  function buyUpgrade(index) {
+    const multiplier = Number(multiplierSelect.value);
+    let cost = upgrades[index].price * multiplier;
+    cost = Math.floor(cost);
+    if (clicks >= cost) {
+      clicks -= cost;
+      upgrades[index].count += multiplier;
+      // Increase price by 1.5^multiplier, approximate with pow
+      upgrades[index].price *= Math.pow(priceMultiplierGrowth, multiplier);
+      upgrades[index].price = Math.ceil(upgrades[index].price);
+      updateDisplays();
+      renderUpgrades();
+    }
+  }
+
+  // Calculate clicks per second from upgrades
+  function getCPS() {
+    const data = upgradesData[currentWorld];
+    let cps = 0;
+    for (let i = 0; i < data.length; i++) {
+      cps += upgrades[i].count * data[i].cps;
+    }
+    return cps;
+  }
+
+  // Update displays (click count, rebirths, button states)
+  function updateDisplays() {
+    clicksDisplay.textContent = `Clicks: ${clicks.toLocaleString()}`;
+    rebirthsDisplay.textContent = `Rebirths: ${rebirths}`;
+    rebirthBtn.disabled = clicks < 10000;
+    if (clicks >= 10000) {
+      rebirthBtn.classList.add('enabled');
+      rebirthBtn.classList.remove('disabled');
+    } else {
+      rebirthBtn.classList.add('disabled');
+      rebirthBtn.classList.remove('enabled');
+    }
+  }
+
+  // Click Ian
+  ianContainer.onclick = () => {
+    clicks++;
+    updateDisplays();
+    renderUpgrades();
+    animateIanClick();
+  };
+
+  // Ian click animation
+  function animateIanClick() {
+    ianImg.style.transform = 'scale(1.2)';
+    setTimeout(() => {
+      ianImg.style.transform = 'scale(1)';
+    }, 120);
+  }
+
+  // Rebirth logic (reset upgrades and clicks, increment rebirths)
+  rebirthBtn.onclick = () => {
+    if (clicks >= 10000) {
+      rebirths++;
+      clicks = 0;
+      for (let i = 0; i < upgrades.length; i++) {
+        upgrades[i].count = 0;
+        upgrades[i].price = upgradesData[currentWorld][i].basePrice;
+      }
+      updateDisplays();
+      renderUpgrades();
+    }
+  };
+
+  // Passive click generation (CPS)
+  setInterval(() => {
+    const cps = getCPS();
+    clicks += cps / 10; // 100ms tick
+    clicks = Math.floor(clicks);
+    updateDisplays();
+    renderUpgrades();
+  }, 100);
+
+  // Switch World button click handler
+  switchWorldBtn.onclick = () => {
+    openWorldSelector();
+  };
+
+  // Open the world selector popup and update UI
+  function openWorldSelector() {
+    worldSelectorOverlay.style.display = 'flex';
+    updateWorldSelectorUI();
+  }
+
+  // Close the world selector popup
+  function closeWorldSelector() {
+    worldSelectorOverlay.style.display = 'none';
+  }
+
+  closeSelectorBtn.onclick = closeWorldSelector;
+
+  // Clicking outside the popup closes it
+  worldSelectorOverlay.onclick = (e) => {
+    if (e.target === worldSelectorOverlay) closeWorldSelector();
+  };
+
+  // Update the world selector UI with current info and states
+  function updateWorldSelectorUI() {
+    // Update world names with (Already Here) if current world
+    world1NameLabel.textContent = 'Cash World' + (currentWorld === 1 ? ' (Already Here)' : '');
+    world2NameLabel.textContent = 'Mars' + (currentWorld === 2 ? ' (Already Here)' : '');
+
+    // Reset all overlays and border styles
+    world1LockedOverlay.style.display = 'none';
+    world2LockedOverlay.style.display = 'none';
+    world1Card.classList.remove('selected-world');
+    world2Card.classList.remove('selected-world');
+
+    // If current world, make black overlay with "Already Here"
+    if (currentWorld === 1) {
+      world1LockedOverlay.style.display = 'block';
+      world1LockedOverlay.textContent = '(Already Here)';
+      world1Card.classList.add('selected-world');
+    }
+    if (currentWorld === 2) {
+      world2LockedOverlay.style.display = 'block';
+      world2LockedOverlay.textContent = '(Already Here)';
+      world2Card.classList.add('selected-world');
+    }
+
+    // For Mars, if not accessible (clicks < 10M), show requirement overlay and disable clicking
+    if (currentWorld !== 2 && clicks < 10000000) {
+      world2LockedOverlay.style.display = 'block';
+      world2LockedOverlay.textContent = 'Must have 10M clicks to enter';
+      world2Card.style.cursor = 'default';
+    } else {
+      if (currentWorld !== 2) world2LockedOverlay.style.display = 'none';
+      world2Card.style.cursor = 'pointer';
+    }
+  }
+
+  // Click handlers on world cards to switch world or show requirement
+  world1Card.onclick = () => {
+    if (currentWorld !== 1) {
+      switchWorld(1);
+      closeWorldSelector();
+    }
+  };
+  world2Card.onclick = () => {
+    if (currentWorld === 2) return;
+    if (clicks >= 10000000) {
+      switchWorld(2);
+      closeWorldSelector();
+    } else {
+      // Flash requirement overlay to show cannot enter
+      world2LockedOverlay.style.display = 'block';
+      setTimeout(() => {
+        updateWorldSelectorUI();
+      }, 1500);
+    }
+  };
+
+  // Switch world function: resets upgrades, sets currentWorld, resets upgrades prices and counts, updates bg color and UI
+  function switchWorld(worldNum) {
+    currentWorld = worldNum;
+    clicks = 0;
+    rebirths = 0;
+    upgrades = [
+      {count: 0, price: upgradesData[currentWorld][0].basePrice},
+      {count: 0, price: upgradesData[currentWorld][1].basePrice},
+      {count: 0, price: upgradesData[currentWorld][2].basePrice},
+    ];
+    updateBackground();
+    updateDisplays();
+    renderUpgrades();
+  }
+
+  // Update background and text color based on current world
+  function updateBackground() {
+    if (currentWorld === 1) {
+      document.body.classList.add('world1');
+      document.body.classList.remove('world2');
+      clicksDisplay.style.color = '#0f0';
+      rebirthsDisplay.style.color = '#0f0';
+      ianContainer.style.borderColor = '#0f0';
+    } else {
+      document.body.classList.add('world2');
+      document.body.classList.remove('world1');
+      clicksDisplay.style.color = '#a00';
+      rebirthsDisplay.style.color = '#a00';
+      ianContainer.style.borderColor = '#a00';
+    }
+  }
+
+  // Initial render
+  updateBackground();
+  updateDisplays();
+  renderUpgrades();
+
+</script>
 </body>
 </html>
