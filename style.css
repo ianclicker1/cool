@@ -5,18 +5,15 @@ body {
   color: white;
 }
 
-#game {
-  padding: 10px;
-}
-
 #top-bar {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  padding: 10px;
 }
 
 #click-counter {
-  font-size: 2em;
+  font-size: 1.5em;
   font-weight: bold;
   color: white;
 }
@@ -32,24 +29,23 @@ body {
   background: black;
   color: white;
   border: none;
-  padding: 6px 10px;
+  padding: 4px 8px;
   border-radius: 4px;
   cursor: pointer;
+  font-size: 0.9em;
 }
 
 #main {
   display: flex;
+  flex-direction: column;
+  align-items: center;
   margin-top: 20px;
 }
 
 #ian-section {
-  flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: start;
-  margin-top: 50px;
-  margin-left: 20px;
 }
 
 #ian-img {
@@ -76,11 +72,11 @@ body {
 }
 
 #upgrades {
-  flex: 2;
   display: flex;
   flex-direction: column;
   gap: 20px;
-  padding-left: 30px;
+  margin-top: 30px;
+  width: 80%;
 }
 
 .upgrade {
