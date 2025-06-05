@@ -12,6 +12,7 @@ const upgrades = {
 function updateDisplay() {
   document.getElementById("click-counter").textContent = `${clicks.toLocaleString()} Clicks`;
   updateRebirthButton();
+  updatePrices();
 }
 
 function updateRebirthButton() {
@@ -29,6 +30,14 @@ function updateRebirthButton() {
 
 function getUpgradePrice(upgrade, count) {
   return Math.floor(upgrade.basePrice * Math.pow(1.5, count));
+}
+
+function updatePrices() {
+  for (let key in upgrades) {
+    const upg = upgrades[key];
+    const price = getUpgradePrice(upg, upg.count);
+    document.getElementById(`${key}-price`).textContent = `${price} Clicks`;
+  }
 }
 
 function addUpgradeIcon(id, iconPath) {
@@ -77,5 +86,13 @@ function tryPurchase(key) {
 document.getElementById("cursor-upgrade").addEventListener("click", () => tryPurchase("cursor"));
 document.getElementById("miner-upgrade").addEventListener("click", () => tryPurchase("miner"));
 document.getElementById("robot-upgrade").addEventListener("click", () => tryPurchase("robot"));
+
+document.getElementById("menu-button").addEventListener("click", () => {
+  document.getElementById("world-popup").style.display = "block";
+});
+
+document.getElementById("close-popup").addEventListener("click", () => {
+  document.getElementById("world-popup").style.display = "none";
+});
 
 updateDisplay();
