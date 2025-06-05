@@ -6,39 +6,37 @@
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <div id="game">
-    <div id="top-bar">
-      <div id="click-counter">0 Clicks</div>
-      <div id="controls">
-        <select id="buy-multiplier">
-          <option value="1">x1</option>
-          <option value="5">x5</option>
-          <option value="10">x10</option>
-          <option value="20">x20</option>
-        </select>
-        <button id="menu-button">Menu</button>
-      </div>
+  <div id="top-bar">
+    <div id="click-counter">0 Clicks</div>
+    <div id="controls">
+      <select id="buy-multiplier">
+        <option value="1">x1</option>
+        <option value="5">x5</option>
+        <option value="10">x10</option>
+        <option value="20">x20</option>
+      </select>
+      <button id="menu-button">Menu</button>
+    </div>
+  </div>
+
+  <div id="main">
+    <div id="ian-section">
+      <img src="ian.png" id="ian-img" alt="Ian" />
+      <button id="rebirth-btn" class="disabled">Rebirth</button>
     </div>
 
-    <div id="main">
-      <div id="ian-section">
-        <img src="ian.png" id="ian-img" alt="Ian" />
-        <button id="rebirth-btn" class="disabled">Rebirth</button>
+    <div id="upgrades">
+      <div class="upgrade" id="cursor-upgrade">
+        <div>Ian Cursor<br><span class="price" id="cursor-price">10 Clicks</span></div>
+        <div class="icons" id="cursor-icons"></div>
       </div>
-
-      <div id="upgrades">
-        <div class="upgrade" id="cursor-upgrade">
-          <div>Ian Cursor<br><span class="price">10 Clicks</span></div>
-          <div class="icons" id="cursor-icons"></div>
-        </div>
-        <div class="upgrade" id="miner-upgrade">
-          <div>Ian Miner<br><span class="price">100 Clicks</span></div>
-          <div class="icons" id="miner-icons"></div>
-        </div>
-        <div class="upgrade" id="robot-upgrade">
-          <div>Ian Robot<br><span class="price">500 Clicks</span></div>
-          <div class="icons" id="robot-icons"></div>
-        </div>
+      <div class="upgrade" id="miner-upgrade">
+        <div>Ian Miner<br><span class="price" id="miner-price">100 Clicks</span></div>
+        <div class="icons" id="miner-icons"></div>
+      </div>
+      <div class="upgrade" id="robot-upgrade">
+        <div>Ian Robot<br><span class="price" id="robot-price">500 Clicks</span></div>
+        <div class="icons" id="robot-icons"></div>
       </div>
     </div>
   </div>
