@@ -1,39 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Ian Clicker</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div id="game">
     <div id="top-bar">
-      <button id="multiplier" class="top-button">1x</button>
-      <button id="menu-button" class="top-button">☰</button>
+      <div id="buy-multiplier">1x</div>
+      <button id="menu-btn">☰</button>
     </div>
 
-    <div id="ian-container">
-      <img src="ian.png" id="ian" alt="Ian">
-      <div id="clicks-display">0</div>
-      <button id="rebirth-button" disabled>Rebirth</button>
+    <div id="ian-container">a
+      <div id="click-count">0 Clicks</div>
+      <img id="ian-img" src="ian.png" alt="Ian" />
+      <button id="rebirth-btn" disabled>Rebirth</button>
     </div>
 
-    <div id="upgrades">
-      <div class="upgrade-row" id="upgrade-row-1"></div>
-      <div class="upgrade-row" id="upgrade-row-2"></div>
-      <div class="upgrade-row" id="upgrade-row-3"></div>
+    <div id="upgrade-area">
+      <div class="upgrade-row" id="row1"></div>
+      <div class="upgrade-row" id="row2"></div>
+      <div class="upgrade-row" id="row3"></div>
     </div>
 
-    <div id="world-select" class="popup hidden">
-      <img src="x.png" id="close-worlds" class="close-btn" alt="Close">
-      <div class="world-card" id="world1card">
-        <img src="world1select.png" alt="Cash World">
-        <div class="world-info">Cash World <span id="world1status">(Already Here)</span></div>
+    <div id="world-menu" class="gui hidden">
+      <img src="x.png" id="close-world-menu" />
+      <div id="world1-select" class="world-select">
+        <img src="world1select.png" />
+        <p id="world1-label">Cash World</p>
       </div>
-      <div class="world-card" id="world2card">
-        <img src="world2select.png" alt="Mars">
-        <div class="world-info">Mars <span id="world2status">- Requires 10M Clicks</span></div>
+      <div id="world2-select" class="world-select">
+        <img src="world2select.png" />
+        <p id="world2-label">Mars</p>
+        <p class="world-locked-text" id="mars-locked">Requires 10M Clicks</p>
       </div>
+    </div>
+
+    <div id="offline-popup" class="gui hidden">
+      <p>You earned <span id="offline-amount"></span> clicks while offline!</p>
+      <button onclick="closeOfflinePopup()">OK</button>
     </div>
   </div>
 
