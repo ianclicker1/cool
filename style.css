@@ -1,126 +1,161 @@
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
-  background: linear-gradient(to bottom right, #003300, #000000);
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(to bottom, #0a0, #050);
   color: white;
   overflow-x: hidden;
 }
 
-#game {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
 #top-bar {
-  position: absolute;
-  top: 10px;
-  right: 20px;
   display: flex;
-  gap: 10px;
+  justify-content: space-between;
+  padding: 10px;
 }
 
-#buy-multiplier, #menu-btn {
-  background: black;
+#buy-multiplier button,
+#menu-button,
+#menu-popup button {
+  font-size: 14px;
+  margin: 2px;
+  padding: 6px 10px;
+  background-color: black;
   color: white;
-  border: none;
-  padding: 5px 10px;
-  font-weight: bold;
+  border: 1px solid #fff;
+  border-radius: 4px;
   cursor: pointer;
 }
 
-#ian-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-top: 80px;
-}
-
-#click-count {
+#menu-popup {
   position: absolute;
-  color: white;
-  font-size: 24px;
-  font-weight: bold;
-  transform: translateY(-10px);
-}
-
-#ian-img {
-  width: 200px;
-  height: 200px;
-  border-radius: 50%;
-  cursor: pointer;
-  margin-top: 20px;
-}
-
-#rebirth-btn {
-  margin-top: 10px;
-  padding: 6px 12px;
-  border: none;
-  border-radius: 5px;
-  font-weight: bold;
-  background-color: grey;
-  color: white;
-  cursor: not-allowed;
-}
-
-#rebirth-btn.active {
-  background-color: orange;
-  cursor: pointer;
-}
-
-#upgrade-area {
-  margin-top: 40px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-}
-
-.upgrade-row {
-  display: flex;
-  gap: 5px;
-  margin-bottom: 10px;
-}
-
-.upgrade-row img {
-  width: 30px;
-  height: 30px;
-}
-
-.gui {
-  position: absolute;
-  top: 20%;
-  left: 30%;
-  background: rgba(0,0,0,0.9);
-  padding: 20px;
-  border-radius: 10px;
-  z-index: 10;
-  color: white;
-}
-
-.gui img#close-world-menu {
-  position: absolute;
-  top: 5px;
+  top: 40px;
   right: 10px;
-  width: 20px;
-  cursor: pointer;
-}
-
-.world-select {
-  margin-top: 20px;
-  text-align: center;
-}
-
-.world-select img {
-  width: 150px;
-  opacity: 0.7;
+  background: #111;
+  padding: 10px;
+  border: 1px solid white;
 }
 
 .hidden {
   display: none;
 }
 
-.world-locked-text {
-  font-size: 12px;
-  color: red;
+#game-container {
+  display: flex;
+  justify-content: space-between;
+  margin: 20px;
+}
+
+#left-upgrades {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-right: 20px;
+}
+
+.upgrade-row {
+  height: 60px;
+  background: rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  padding: 5px;
+  gap: 5px;
+  border-radius: 8px;
+}
+
+#center-clicker {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#click-count {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: -40px;
+  z-index: 1;
+  position: relative;
+}
+
+#ian {
+  width: 250px;
+  height: 250px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-top: 60px;
+  margin-bottom: 20px;
+}
+
+#rebirth-button {
+  font-size: 16px;
+  padding: 10px;
+  background-color: gray;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+#upgrades-list {
+  position: absolute;
+  right: 20px;
+  top: 100px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.upgrade-button {
+  background-color: gray;
+  color: white;
+  padding: 10px;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-size: 14px;
+  width: 150px;
+  text-align: left;
+}
+
+.upgrade-button.available {
+  background-color: green;
+}
+
+.upgrade-button.unavailable {
+  background-color: #444;
+}
+
+#world-selector {
+  position: absolute;
+  top: 60px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: black;
+  padding: 20px;
+  border: 2px solid white;
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  z-index: 10;
+}
+
+.world-card img {
+  width: 120px;
+  opacity: 0.7;
+}
+
+.world-card p {
+  color: white;
+  margin-top: 10px;
+  text-align: center;
+}
+
+.x-button {
+  background: red;
+  color: white;
+  font-size: 18px;
+  border: none;
+  border-radius: 4px;
+  padding: 4px 8px;
+  cursor: pointer;
 }
