@@ -1,121 +1,126 @@
 body {
   margin: 0;
   font-family: Arial, sans-serif;
+  background: linear-gradient(to bottom right, #003300, #000000);
   color: white;
-  background: linear-gradient(to bottom, #001100, #003300); /* Green & black */
   overflow-x: hidden;
 }
 
-#top-bar {
+#game {
   display: flex;
-  justify-content: flex-end;
-  padding: 10px;
+  flex-direction: column;
+  align-items: center;
 }
 
-.top-button {
+#top-bar {
+  position: absolute;
+  top: 10px;
+  right: 20px;
+  display: flex;
+  gap: 10px;
+}
+
+#buy-multiplier, #menu-btn {
   background: black;
   color: white;
-  font-weight: bold;
   border: none;
-  padding: 6px 10px;
-  margin-left: 5px;
-  font-size: 14px;
+  padding: 5px 10px;
+  font-weight: bold;
   cursor: pointer;
-  border-radius: 5px;
 }
 
 #ian-container {
-  text-align: left;
-  margin-left: 20px;
-  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 80px;
 }
 
-#ian {
-  width: 180px;
-  margin-top: 40px;
-}
-
-#clicks-display {
+#click-count {
   position: absolute;
-  top: 80px;
-  left: 70px;
-  font-size: 22px;
   color: white;
+  font-size: 24px;
   font-weight: bold;
+  transform: translateY(-10px);
 }
 
-#rebirth-button {
-  display: block;
-  margin-top: 15px;
-  background: grey;
+#ian-img {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  cursor: pointer;
+  margin-top: 20px;
+}
+
+#rebirth-btn {
+  margin-top: 10px;
+  padding: 6px 12px;
   border: none;
-  padding: 8px 14px;
   border-radius: 5px;
   font-weight: bold;
+  background-color: grey;
   color: white;
+  cursor: not-allowed;
+}
+
+#rebirth-btn.active {
+  background-color: orange;
   cursor: pointer;
 }
 
-#rebirth-button.available {
-  background: orange;
-}
-
-#upgrades {
+#upgrade-area {
+  margin-top: 40px;
   display: flex;
   flex-direction: column;
-  gap: 15px;
-  margin-top: 30px;
-  margin-left: 220px;
+  align-items: center;
+  gap: 10px;
 }
 
 .upgrade-row {
   display: flex;
   gap: 5px;
+  margin-bottom: 10px;
 }
 
 .upgrade-row img {
-  width: 32px;
-  height: 32px;
+  width: 30px;
+  height: 30px;
 }
 
-button:disabled {
-  background: #555;
-  cursor: not-allowed;
-}
-
-.popup {
-  position: fixed;
+.gui {
+  position: absolute;
   top: 20%;
-  left: 20%;
-  background: black;
+  left: 30%;
+  background: rgba(0,0,0,0.9);
   padding: 20px;
-  border: 2px solid white;
   border-radius: 10px;
-  z-index: 100;
+  z-index: 10;
+  color: white;
+}
+
+.gui img#close-world-menu {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+  width: 20px;
+  cursor: pointer;
+}
+
+.world-select {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.world-select img {
+  width: 150px;
+  opacity: 0.7;
 }
 
 .hidden {
   display: none;
 }
 
-.close-btn {
-  width: 20px;
-  float: right;
-  cursor: pointer;
-}
-
-.world-card {
-  margin-top: 20px;
-  text-align: center;
-}
-
-.world-card img {
-  width: 160px;
-  opacity: 0.85;
-  display: block;
-  margin: 0 auto;
-}
-
-.world-info {
-  margin-top: 5px;
+.world-locked-text {
+  font-size: 12px;
+  color: red;
 }
