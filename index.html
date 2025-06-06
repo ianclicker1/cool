@@ -2,61 +2,43 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Ian Clicker</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <div id="top-bar">
+    <div id="clicks-display">0 Clicks</div>
+  </div>
+
   <div id="game">
-    <div id="top-bar">
-      <button id="buyMultiplierBtn">1x</button>
-      <div class="dropdown">
-        <button id="menuBtn">☰</button>
-        <div class="dropdown-content" id="menuDropdown">
-          <a href="#" id="openWorldsBtn">Worlds</a>
-        </div>
+    <div id="upgrades">
+      <div class="upgrade-row" id="row1">
+        <div class="upgrade" data-type="cursor">Ian Cursor<br><span class="price">15 Clicks</span></div>
+      </div>
+      <div class="upgrade-row" id="row2">
+        <div class="upgrade" data-type="miner">Ian Miner<br><span class="price">100 Clicks</span></div>
+      </div>
+      <div class="upgrade-row" id="row3">
+        <div class="upgrade" data-type="robot">Ian Robot<br><span class="price">500 Clicks</span></div>
       </div>
     </div>
-    <div id="main">
-      <div id="clicker">
-        <div id="click-count">0 Clicks</div>
-        <img id="ian" src="ian.png" alt="Ian" />
-        <button id="rebirthBtn" class="greyed">Rebirth</button>
-      </div>
-      <div id="upgrades">
-        <div class="upgrade-row" id="upgradeRow1"></div>
-        <div class="upgrade-row" id="upgradeRow2"></div>
-        <div class="upgrade-row" id="upgradeRow3"></div>
-      </div>
+
+    <div id="ian-container">
+      <img src="ian.png" id="ian" alt="Ian" />
+      <button id="rebirth">Rebirth | 100,000</button>
     </div>
   </div>
 
-  <div id="worldsPopup" class="popup hidden">
-    <div class="popup-content">
-      <button id="closeWorlds" class="close-btn">
-        <img src="x.png" alt="Close" />
-      </button>
-      <div class="world-select" id="world1select">
-        <img src="world1select.png" alt="Cash World" />
-        <p>
-          Cash World <span id="world1Status">(Already Here)</span>
-        </p>
-      </div>
-      <div class="world-select" id="world2select">
-        <img src="world2select.png" alt="Mars" />
-        <p>
-          Mars <span id="world2Status">- Requires 10M Clicks</span>
-        </p>
-      </div>
-    </div>
+  <div id="bottom-buttons">
+    <button id="multiplier">x1</button>
+    <button id="menu">☰</button>
   </div>
 
-  <div id="offlinePopup" class="popup hidden">
-    <div class="popup-content">
-      <p>
-        You earned <span id="offlineEarnings">0</span> clicks while offline!
-      </p>
-      <button onclick="closeOfflinePopup()">OK</button>
-    </div>
+  <div id="worlds-menu" class="popup" style="display: none;">
+    <button id="close-menu">x</button>
+    <div class="world-option">Cash World (Already Here)</div>
+    <div class="world-option locked">Mars<br><small>Must have 10M Clicks</small></div>
   </div>
 
   <script src="script.js"></script>
