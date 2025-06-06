@@ -280,3 +280,18 @@ function buildWorldsUI() {
     };
 
     container.appendChild(div);
+  }
+}
+
+// --- Main update ---
+function updateAll() {
+  updateClickCount();
+  updateRebirthButton();
+  updateMultiplierButton();
+  updateBackground();
+  buildUpgradesUI();
+}
+
+// --- Init ---
+loadGame();
+updateAll();
